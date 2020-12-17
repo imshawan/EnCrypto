@@ -1,5 +1,6 @@
 import base64
 import os
+import iconpack
 from time import sleep
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
@@ -123,8 +124,8 @@ def Encrypt():
     sleep
     with open(output_file, 'wb') as f:
         f.write(encrypted)      # Write the encrypted bytes to the output file
-        messagebox.showinfo('Success!', 'Encryption Completed Successfully')
         outputconsole("Encrypted")
+        messagebox.showinfo('Success!', 'Encryption Completed Successfully')
     keyFile = os.path.abspath(path + "\info.txt")
     with open(keyFile, 'w') as writefile:
         writefile.write(f'Encryption Key: {password_provided}\nFile Address: {input_file}\n')
@@ -178,8 +179,8 @@ def Decrypt():
         obox3("Writing Encrypted bytes to file")
         with open(output_file, 'wb') as f:
             f.write(decrypted)  # Write the decrypted bytes to the output file
-            messagebox.showinfo('Success!', 'Decryption Completed Successfully')
             outputconsole("Successfully Decrypted")
+            messagebox.showinfo('Success!', 'Decryption Completed Successfully')
     except InvalidToken as e:
         messagebox.showerror('Error!', "Incorrect Decryption Key!")
         return
@@ -188,8 +189,12 @@ def Decrypt():
 canvas = tk.Canvas(root, height=500, width=500, bg='#d9d9d9')
 canvas.pack()
 
+MAIN_ICON = iconpack.APP_ICON
 if not os.path.isfile('enc.png'):
-    pass
+    base64_img_bytes = MAIN_ICON.encode('utf-8')
+    with open('enc.png', 'wb') as file_to_save:
+        decoded_image_data = base64.decodebytes(base64_img_bytes)
+        file_to_save.write(decoded_image_data)
 else:
     ico = PhotoImage(file='enc.png')
     root.iconphoto(False, ico)
